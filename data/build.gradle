@@ -1,0 +1,59 @@
+plugins {
+    id 'com.android.library'
+    id 'kotlin-android'
+    id 'kotlin-android-extensions'
+}
+
+android {
+    def androidConfigurations = rootProject.ext.androidConfigurations
+
+    compileSdkVersion androidConfigurations.androidCompileSdkVersion
+    defaultConfig {
+        minSdk androidConfigurations.androidMinSdkVersion
+        targetSdk androidConfigurations.androidTargetSdkVersion
+        versionCode androidConfigurations.versionCode
+        versionName versionName
+
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        consumerProguardFiles "consumer-rules.pro"
+
+        buildConfigField "String", "BASE_URL", '"https://api.github.com/"'
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+    kotlinOptions {
+        jvmTarget = '1.8'
+    }
+}
+
+dependencies {
+
+    implementation(project(path: ":domain"))
+
+    def dependencies = rootProject.ext.dependencies
+
+    implementation dependencies.libs
+
+    implementation dependencies.kotlin
+    implementation dependencies.kotlinReflection
+    implementation dependencies.kotlinCoroutines
+
+    implementation dependencies.okHttp
+    implementation dependencies.okHttpInterceptor
+    implementation dependencies.gson
+    implementation dependencies.retrofit
+    implementation dependencies.retrofitGsonConverter
+    implementation dependencies.retrofitCoroutines
+
+    implementation dependencies.koin
+    implementation dependencies.koinViewModel
+}

@@ -1,0 +1,90 @@
+plugins {
+    id 'com.android.application'
+    id 'kotlin-android'
+    id 'kotlin-android-extensions'
+    id 'kotlin-kapt'
+}
+
+android {
+    def androidConfigurations = rootProject.ext.androidConfigurations
+
+    compileSdkVersion androidConfigurations.androidCompileSdkVersion
+    defaultConfig {
+        applicationId androidConfigurations.applicationId
+        minSdk androidConfigurations.androidMinSdkVersion
+        targetSdk androidConfigurations.androidTargetSdkVersion
+        versionCode androidConfigurations.versionCode
+        versionName versionName
+
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+    kotlinOptions {
+        jvmTarget = '1.8'
+    }
+    buildFeatures {
+        viewBinding true
+    }
+    dataBinding.enabled true
+}
+
+dependencies {
+
+    implementation(project(path: ":data"))
+    implementation(project(path: ":domain"))
+
+    def dependencies = rootProject.ext.dependencies
+
+    implementation dependencies.libs
+
+    implementation dependencies.appCompat
+    implementation dependencies.constraintLayout
+    implementation dependencies.recyclerView
+    implementation dependencies.navigationFragment
+    implementation dependencies.navigationUI
+    implementation dependencies.swipeRefresh
+
+    implementation dependencies.kotlin
+    implementation dependencies.kotlinReflection
+    implementation dependencies.kotlinCoroutines
+
+    implementation dependencies.lifecycleExtentions
+    kapt dependencies.lifecycleCompiler
+    implementation dependencies.livedata
+
+    implementation dependencies.koin
+    implementation dependencies.koinViewModel
+
+    implementation dependencies.okHttp
+    implementation dependencies.okHttpInterceptor
+    implementation dependencies.gson
+    implementation dependencies.retrofit
+    implementation dependencies.retrofitGsonConverter
+    implementation dependencies.retrofitCoroutines
+
+    implementation dependencies.coreKtx
+    implementation dependencies.fragmentKtx
+    implementation dependencies.activityKtx
+    implementation dependencies.collectionKtx
+    implementation dependencies.viewmodelKtx
+
+    implementation dependencies.googleMaterial
+    implementation(dependencies.glide) {
+        exclude group: "com.android.support"
+    }
+    kapt dependencies.glideProcessor
+
+    testImplementation 'junit:junit:4.+'
+    androidTestImplementation 'androidx.test.ext:junit:1.1.3'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.4.0'
+}
